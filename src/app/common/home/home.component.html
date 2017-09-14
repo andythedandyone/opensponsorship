@@ -1,0 +1,43 @@
+<button class="btn btn-outline">Regular</button>
+<button class="btn btn-success-outline">Success-Outline</button>
+<button class="btn btn-info-outline">Info</button>
+<button class="btn btn-warning-outline">Warning</button>
+<button class="btn btn-danger-outline" (click)="loaderBtn()">Danger</button>
+<button class="btn btn-outline" disabled>Disabled</button>
+
+
+<span *ngIf="loader | async" class="spinner" >
+    Loading...
+</span>
+
+
+<br>
+
+
+<clr-wizard #wizard [(clrWizardOpen)]="open">
+  <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+  <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+  <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+  <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Basic Info</ng-template>
+    ...
+  </clr-wizard-page>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>About</ng-template>
+    ...
+  </clr-wizard-page>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Social Media</ng-template>
+    ...
+  </clr-wizard-page>
+
+
+
+
+
+
+</clr-wizard>
