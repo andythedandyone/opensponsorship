@@ -33,12 +33,12 @@ app.get('*', function(req, res, next) {
   console.log('SERVER ERROR, RESTART')
   res.sendStatus(404);
 });
-  
+
 //  Create and Run Server
 const port = process.env.PORT || 3000;
 app.set(port, port);
 
 var server = http.createServer(app);
 server.listen(port, function() {
-  console.log('Server Running on port 3000')
+  console.log('Server Running on port ', port)
 });
