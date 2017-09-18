@@ -1,0 +1,224 @@
+<div class="topmenu">
+  <div class="buttonmenu">
+
+    <button class="btn btn-outline" (click)="onRegistar()">Back to Registration</button>
+    <!--<button class="btn btn-outline" (click)="fetchAll()">Get All Athletes</button>-->
+    <!--<button class="btn btn-outline" (click)="fetchOne()">Search and Edit</button>-->
+    <!--<button class="btn btn-danger-outline" (click)="loaderBtn()">Danger</button>-->
+
+  </div>
+</div>
+
+<div class="container-fluid">
+<form [formGroup]="osEditForm" (ngSubmit)="onSubmit()">
+  <section class="form-block" formGroupName="personal">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" id="name" placeholder="Name" formControlName="name">
+    </div>
+
+    <div class="form-group">
+      <label for="dob">Date of Birth</label>
+      <input type="date" id="dob" formControlName="dob">
+    </div>
+
+    <div class="form-group">
+      <label for="gender">Gender</label>
+      <div class="select">
+        <select id="gender" formControlName="gender">
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="nationality">Nationality</label>
+      <input type="text" id="nationality" placeholder="Nationality" formControlName="nationality">
+    </div>
+
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input type="text" id="location" placeholder="Enter your State" formControlName="location">
+    </div>
+
+    <div class="form-group">
+      <label for="mstatus">Marital Status</label>
+      <div class="select">
+        <select id="mstatus" formControlName="marital">
+          <option value="Single">Single</option>
+          <option value="Married">Married</option>
+          <option value="Divorced">Divorced</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+<!--Personal Interests-->
+
+    <section class="form-block" formGroupName="interest">
+      <div class="form-group">
+        <label for="interests">Interest</label>
+        <input type="text" id="interests" placeholder="Interested in?" formControlName="interests">
+      </div>
+
+      <div class="form-group">
+        <label for="drinks">Drink Alcohol?</label>
+        <div class="select">
+          <select id="drinks" formControlName="drinks">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="pets">Pets</label>
+        <div class="select">
+          <select id="pets" formControlName="pets" >
+            <option value="dogs">Dog</option>
+            <option value="cat">Cat</option>
+            <option value="catanddog">Cat and Dog</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="charity">Charity</label>
+        <input type="text" #charityVal id="charity">
+        <button type="button" class="btn btn-icon btn-sm btn-primary" (click)="onAddCharity(charityVal)">
+          <clr-icon shape="plus"></clr-icon>
+        </button>
+
+        <button type="button" class="btn btn-icon btn-sm btn-danger" (click)="onClearArray('charity')">
+          <clr-icon shape="times"></clr-icon>
+        </button>
+
+        <table class="table table-compact table-noborder">
+          <thead>
+          <tr>
+            <th>Charities List</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of user['interest'].charities">
+            <td>{{item}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+
+<!--&lt;!&ndash;Sports&ndash;&gt;-->
+
+    <section class="form-block" formGroupName="sports">
+      <div class="form-group">
+        <label for="team">Team</label>
+        <input type="text" id="team" placeholder="Favorite Team" formControlName="team">
+      </div>
+
+      <div class="form-group">
+        <label for="association">Association</label>
+        <div class="select">
+          <select id="association" formControlName="association">
+            <option value="NFL">NFL</option>
+            <option value="NBA">NBA</option>
+            <option value="MLB">MLB</option>
+            <option value="MLB">MLB</option>
+            <option value="NHL">NHL</option>
+            <option value="MLS">MLS</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="sports">Sports</label>
+        <!--<input type="text" #sportsVal id="sports">-->
+        <div class="select">
+          <select id="sports" #sportsVal>
+            <option *ngFor="let spt of sportsList" [value]="spt" >{{spt}}</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-icon btn-sm btn-primary" (click)="onAddSport(sportsVal)">
+          <clr-icon shape="plus"></clr-icon>
+        </button>
+        <button type="button" class="btn btn-icon btn-danger btn-sm"  (click)="onClearArray('sport')">
+          <clr-icon shape="times"></clr-icon>
+        </button>
+        <table class="table table-compact table-noborder">
+          <thead>
+          <tr>
+            <th>Sports List</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of user['sports'].sports">
+            <td>{{item}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+
+<!--&lt;!&ndash;About Yourself&ndash;&gt;-->
+
+    <section class="form-block">
+      <!--<div class="form-group">-->
+      <label for="aboutyou">Tell us about yourself</label>
+      <textarea id="aboutyou" cols="30" rows="10" formControlName="about"></textarea>
+      <!--</div>-->
+    </section>
+
+
+<!--&lt;!&ndash;Media&ndash;&gt;-->
+
+    <section class="form-block">
+      <div class="form-group">
+        <label for="profilepic">Profile Picture</label>
+        <input type="file" id="profilepic" formControlName="profilePic">
+      </div>
+
+      <div class="form-group">
+        <label for="socialmedia">Social Media Handler</label>
+
+        <div class="select">
+          <select id="sociallist" #sociallist>
+            <option value="Facebook">Facebook</option>
+            <option value="Twitter">Twitter</option>
+            <option value="Youtube">Youtube</option>
+            <option value="Instagram">Instagram</option>
+            <option value="Twitch">Twitch</option>
+            <option value="Snapchat">Snapchat</option>
+          </select>
+        </div>
+        <input type="text" id="socialmedia" #socialnickname>
+
+        <button type="button" class="btn btn-icon btn-sm btn-primary" (click)="onAddSocial(sociallist, socialnickname)">
+          <clr-icon shape="plus"></clr-icon>
+        </button>
+        <button type="button" class="btn btn-icon btn-danger btn-sm"  (click)="onClearArray('social')">
+          <clr-icon shape="times"></clr-icon>
+        </button>
+        <table class="table table-compact table-noborder">
+          <thead>
+          <tr>
+            <th>Social Media</th>
+            <th>Handle</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of user['socials']">
+            <td>{{item.Social}}</td>
+            <td>{{item.handler}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+</div>

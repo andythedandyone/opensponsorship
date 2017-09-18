@@ -26,6 +26,7 @@
     "clarity-icons": "^0.10.4",
     "clarity-ui": "^0.10.4",
     "core-js": "^2.4.1",
+    "country-query": "^1.0.1",
     "rxjs": "^5.4.2",
     "tether": "^1.4.0",
     "zone.js": "^0.8.14"
