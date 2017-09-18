@@ -1,4 +1,4 @@
-import {AfterContentChecked, AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Wizard } from 'clarity-angular/wizard/wizard';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -31,9 +31,9 @@ export class HomeComponent implements OnInit {
   @ViewChild('wizard') wizard: Wizard;
   @ViewChild('charityVal') charityInput;
   @ViewChild('sportsVal') sportInput;
-  // @ViewChild('sociallist') socialListInput;
   @ViewChild('socialnickname') socialNickInput;
   @ViewChild('name') nameInput;
+  @ViewChild('fileUpload') fileUploads;
 
   osForm: FormGroup;
 
@@ -100,9 +100,10 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  onSubmit() {
-    console.log(this.osForm.value);
+  onSubmit(file: any) {
+    console.log('file root ', file);
     if (this.osForm.status === 'VALID') {
+      this._ath.uploadToS3(file[0]);
       this._ath.saveData(this.osForm.value).subscribe((data) => {
         this.users.push(data);
         this.resetUI();
@@ -125,9 +126,10 @@ export class HomeComponent implements OnInit {
   }
 
   resetUI(): void {
-    // this.osForm.reset();
-    // this.wizard.reset();
+    this.osForm.reset();
+    this.wizard.reset();
   }
+
   createForm() {
     this.osForm = this.fb.group({
       personal: this.fb.group({

@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import { Athlete } from './athlete';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {HttpClient} from '@angular/common/http';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+
+import * as AWS from 'aws-sdk';
 
 @Injectable()
 export class AthleteService {
@@ -14,8 +16,7 @@ export class AthleteService {
   athleteDb: Athlete[] = [];
   allApi = 'http://localhost:3000/api/athletes';
   oneApi = 'http://localhost:3000/api/athlete/';
-  nation = 'http://localhost:3000/api/nationality';
-
+  s3Bucket = 'https://s3.amazonaws.com/com.andy.opensponsorship.challenge/';
 
   constructor(private _http: HttpClient) {}
 
@@ -36,8 +37,27 @@ export class AthleteService {
   }
 
   updateData(body: object) {
-    console.log('this is the id ', body);
-    const params = new HttpParams().set('id', body['_id']);
-    return this._http.put(this.oneApi + body['_id'], body).subscribe();
+    return this._http.put(this.oneApi + body['_id'], body).subscribe(data => {
+      const userObj = Object.values(data);
+      const index = this.athleteDb.findIndex(id => {
+        return id === userObj[0]._id;
+      });
+      this.athleteDb.splice(index, 1);
+      this.athleteDb.push(userObj[0]);
+    });
   }
+
+  uploadToS3(file: File) {
+
+    const S3 = new AWS.S3({apiVersion: '2006-03-01', endpoint: 'https://s3.amazonaws.com/'});
+
+    const bkt = 'com.andy.opensponsorship.challenge';
+    const Key = 'Imagens-de-parabéns-Palmeiras-103-anos.jpg';
+
+    var params = {
+      Bucket: bkt,
+      Key: Key
+    };
+  }
+
 }

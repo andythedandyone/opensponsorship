@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AthleteService} from "./shared/athlete.service";
+import {AthleteService} from './shared/athlete.service';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +12,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this._auth.letThemKnow.subscribe(data => {
-      console.log(data)
       this.panel = data;
     });
-    console.log(this.panel);
   }
 }

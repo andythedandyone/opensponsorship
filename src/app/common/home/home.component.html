@@ -7,14 +7,9 @@
   </div>
 </div>
 
-
-
-
-
 <span *ngIf="loader | async" class="spinner" >
     Loading...
 </span>
-
 
 <br>
 
@@ -23,13 +18,12 @@
   <clr-wizard-button [type]="'cancel'" (click)="resetUI()">Cancel</clr-wizard-button>
   <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
   <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
-  <clr-wizard-button [type]="'finish'" (click)="onSubmit()" [clrWizardButtonDisabled]="osForm.invalid">Finish</clr-wizard-button>
+  <clr-wizard-button [type]="'finish'" (click)="onSubmit(fileUpload.files)" [clrWizardButtonDisabled]="osForm.invalid">Finish</clr-wizard-button>
 
   <!--Basic Info-->
   <clr-wizard-page>
     <ng-template clrPageTitle>Basic Info</ng-template>
-    <!--name, sport, nationality, gender, date of birth-->
-    <form [formGroup]="osForm">
+      <form [formGroup]="osForm">
       <section class="form-block" formGroupName="personal">
         <div class="form-group">
           <label for="name">Name</label>
@@ -78,8 +72,8 @@
   <!--Personal Interests-->
   <clr-wizard-page>
     <ng-template clrPageTitle>Personal Interests</ng-template>
-    <form [formGroup]="osForm">
-      <section class="form-block" formGroupName="interest">
+      <form [formGroup]="osForm">
+        <section class="form-block" formGroupName="interest">
         <div class="form-group">
           <label for="interests">Interest</label>
           <input type="text" id="interests" placeholder="Interested in?" formControlName="interests">
@@ -132,15 +126,14 @@
           </table>
         </div>
       </section>
-    </form>
+      </form>
   </clr-wizard-page>
 
   <!--Sports-->
   <clr-wizard-page>
     <ng-template clrPageTitle>Sports</ng-template>
-
-    <form [formGroup]="osForm">
-      <section class="form-block" formGroupName="sports">
+      <form [formGroup]="osForm">
+        <section class="form-block" formGroupName="sports">
         <div class="form-group">
           <label for="team">Team</label>
           <input type="text" id="team" placeholder="Favorite Team" formControlName="team">
@@ -195,8 +188,8 @@
   <!--About Yourself-->
   <clr-wizard-page>
     <ng-template clrPageTitle>About Yourself</ng-template>
-    <form [formGroup]="osForm">
-      <section class="form-block">
+      <form [formGroup]="osForm">
+        <section class="form-block">
         <!--<div class="form-group">-->
           <label for="aboutyou">Tell us about yourself</label>
           <textarea id="aboutyou" cols="30" rows="10" formControlName="about"></textarea>
@@ -208,11 +201,11 @@
   <!--Media-->
   <clr-wizard-page>
     <ng-template clrPageTitle>Media</ng-template>
-    <form [formGroup]="osForm">
-      <section class="form-block">
+      <form [formGroup]="osForm">
+        <section class="form-block">
         <div class="form-group">
           <label for="profilepic">Profile Picture</label>
-          <input type="file" id="profilepic" formControlName="profilePic">
+          <input type="file" id="profilepic" #fileUpload formControlName="profilePic">
         </div>
 
         <div class="form-group">
@@ -253,8 +246,6 @@
         </div>
       </section>
     </form>
-    {{ osForm.status | json }}
-    {{ osForm.value | json }}
   </clr-wizard-page>
 
 </clr-wizard>
@@ -271,7 +262,6 @@
   <clr-dg-row  *clrDgItems="let user of users" [clrDgItem]="user._id">
     <clr-dg-action-overflow>
       <button class="action-item" (click)="onEdit(user)">Edit</button>
-      <button class="action-item">Delete</button>
     </clr-dg-action-overflow>
     <clr-dg-cell>{{user.personal.name}}</clr-dg-cell>
     <clr-dg-cell>{{user.personal.dob}}</clr-dg-cell>
@@ -283,7 +273,6 @@
   </clr-dg-row>
 
   <clr-dg-footer>
-    <!--Selected users: <span *ngFor="let user of selected">{{user.name}}</span>-->
     {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
     of {{pagination.totalItems}} users
     <clr-dg-pagination #pagination [clrDgPageSize]="5"></clr-dg-pagination>
