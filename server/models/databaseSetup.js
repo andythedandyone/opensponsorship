@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const dbUrl = 'mongodb://heroku_5zz0n5bc:eebcarvn2qmr2nnri6f8bhh7dg@ds141464.mlab.com:41464/heroku_5zz0n5bc';
+const dbUrl = process.env.MONGODB_URI:
 // const dbUrl = ('mongodb://osp:open123456@ds135444.mlab.com:35444/opensponsorship');
 // mongodb://<dbuser>:<dbpassword>@ds141464.mlab.com:41464/heroku_5zz0n5bc
 
