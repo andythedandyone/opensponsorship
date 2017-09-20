@@ -5,6 +5,18 @@ import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 import * as AWS from 'aws-sdk';
+import {Observable} from "rxjs/Observable";
+
+const s3 = new AWS.S3({
+  apiVersion: '2006-03-01',
+  region: 'us-east-1',
+  credentials: {
+    accessKeyId: 'AKIAIJ5UM2BB5MJSOLGQ',
+    secretAccessKey: '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'
+  }
+});
+const bucket = 'comandyread';
+
 
 @Injectable()
 export class AthleteService {
@@ -12,11 +24,12 @@ export class AthleteService {
   letThemKnow = new BehaviorSubject(true);
   dataReady = new BehaviorSubject(false);
   editReady = new BehaviorSubject(false);
+  uploadReady = new BehaviorSubject(false);
+  letUrlOut = new BehaviorSubject('');
   editUser = {};
   athleteDb: Athlete[] = [];
   allApi = 'http://localhost:3000/api/athletes';
   oneApi = 'http://localhost:3000/api/athlete/';
-  s3Bucket = 'https://s3.amazonaws.com/com.andy.opensponsorship.challenge/';
 
   constructor(private _http: HttpClient) {}
 
@@ -49,15 +62,53 @@ export class AthleteService {
 
   uploadToS3(file: File) {
 
-    const S3 = new AWS.S3({apiVersion: '2006-03-01', endpoint: 'https://s3.amazonaws.com/'});
+    console.log('original file --> ', file);
+    if (file) {
+      const params = {
+        Body: file,
+        Bucket: bucket,
+        Key: file.name,
+        ACL: 'public-read',
+        ContentType: 'media-type'
+      };
 
-    const bkt = 'com.andy.opensponsorship.challenge';
-    const Key = 'Imagens-de-parabéns-Palmeiras-103-anos.jpg';
+      s3.putObject(params, (err, data) => {
+        if (err) {
+          console.log('error ----> ', err);
+          return;
+        }
+        console.log('it has been saved ----> ', data);
+        console.log('-------------------------------------------');
 
-    var params = {
-      Bucket: bkt,
-      Key: Key
-    };
+        if (data) {
+          console.log('YES FILE UPLOADED');
+          this.uploadReady.next(true);
+        }
+      });
+    }
+
+    console.log('last line of send to s3');
   }
+
+  getObjUrl(file: string = '') {
+    console.log('Reading Files');
+
+    const params = {
+      Bucket: bucket,
+      Key: file,
+      Expires: 60
+    };
+
+    s3.getSignedUrl('getObject', params, (err, data) => {
+      if (err) {
+        console.log('error ----> ', err);
+        return;
+      }
+      console.log('success -----> ', data);
+      this.letUrlOut.next(data);
+      return data;
+    });
+  }
+
 
 }

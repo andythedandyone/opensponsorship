@@ -18,7 +18,7 @@
   <clr-wizard-button [type]="'cancel'" (click)="resetUI()">Cancel</clr-wizard-button>
   <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
   <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
-  <clr-wizard-button [type]="'finish'" (click)="onSubmit(fileUpload.files)" [clrWizardButtonDisabled]="osForm.invalid">Finish</clr-wizard-button>
+  <clr-wizard-button [type]="'finish'" (click)="onSubmit()" [clrWizardButtonDisabled]="osForm.invalid">Finish</clr-wizard-button>
 
   <!--Basic Info-->
   <clr-wizard-page>
@@ -205,7 +205,11 @@
         <section class="form-block">
         <div class="form-group">
           <label for="profilepic">Profile Picture</label>
-          <input type="file" id="profilepic" #fileUpload formControlName="profilePic">
+          <input type="file" id="profilepic" #up (change)="onAddPic(up.files)">
+          <span *ngIf="loader | async" class="spinner" >
+             Loading...
+          </span>
+          <img src="{{url}}" alt="profile pic" style="height: 50px">
         </div>
 
         <div class="form-group">

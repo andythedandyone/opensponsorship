@@ -3,6 +3,7 @@ import {AthleteService} from '../../shared/athlete.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Athlete} from '../../shared/athlete';
 import { sportsList } from '../../shared/sportsData';
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Component({
   selector: 'app-editform',
@@ -11,10 +12,10 @@ import { sportsList } from '../../shared/sportsData';
 })
 export class EditformComponent implements OnInit {
 
-
+  loader = new BehaviorSubject(false);
   osEditForm: FormGroup;
-  userData: Athlete[] = [];
   user = {};
+  url = '';
   sportsList: Array<string> = sportsList;
   @ViewChild('charityVal') charityInput;
   @ViewChild('socialnickname') socialNickInput;
@@ -86,7 +87,23 @@ export class EditformComponent implements OnInit {
     }
   }
 
-
+  onAddPic(file: File) {
+    this.loader.next(true);
+    this._auth.uploadToS3(file[0]);
+    this._auth.uploadReady.subscribe(stat => {
+      if (stat) {
+        console.log('READY UPLOAD');
+        const x = this._auth.getObjUrl(file[0].name);
+        this._auth.letUrlOut.subscribe(url => {
+          console.log('URL READY => ', url);
+          this.url = url;
+          this.osEditForm.controls['profilePic'].setValue(url);
+          console.log(this.osEditForm.value);
+          this.loader.next(false);
+        })
+      }
+    })
+  }
 
 
 

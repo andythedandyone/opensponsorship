@@ -179,8 +179,13 @@
     <section class="form-block">
       <div class="form-group">
         <label for="profilepic">Profile Picture</label>
-        <input type="file" id="profilepic" formControlName="profilePic">
+        <input type="file" id="profilepic" #up (change)="onAddPic(up.files)">
+
       </div>
+      <br>
+      <img *ngIf="user['profilePic']" src="{{user['profilePic']}}" style="height: 200px">
+      <br>
+      <br>
 
       <div class="form-group">
         <label for="socialmedia">Social Media Handler</label>

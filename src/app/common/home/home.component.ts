@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit {
   stuff = this._ath.getAll();
   edit = {};
   panel = false;
+  url = '';
 
 
   @ViewChild('wizard') wizard: Wizard;
@@ -100,17 +101,31 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  onSubmit(file: any) {
-    console.log('file root ', file);
+  onSubmit(file: any = '') {
+    // console.log('file root ', file);
     if (this.osForm.status === 'VALID') {
-      this._ath.uploadToS3(file[0]);
-      this._ath.saveData(this.osForm.value).subscribe((data) => {
-        this.users.push(data);
-        this.resetUI();
-      });
-    } else {
-      console.log('FORM IS EMPTY');
-    }
+      // if(file) {
+      //   this._ath.uploadToS3(file[0]);
+        this._ath.uploadReady.subscribe(upload => {
+          console.log('result from obser to s3 ', upload);
+          if (upload) {
+            this._ath.saveData(this.osForm.value).subscribe((data) => {
+              this.users.push(data);
+              console.log('result of form ---> ', this.osForm.value);
+              this.resetUI();
+            });
+          }
+        });
+      } else {
+        this._ath.saveData(this.osForm.value).subscribe((data) => {
+          this.users.push(data);
+          this.resetUI();
+        });
+      }
+    // } else {
+    //   console.log('FORM IS EMPTY');
+    // }
+    this._ath.uploadReady.next(false);
   }
 
   onEdit(event: any) {
@@ -128,6 +143,24 @@ export class HomeComponent implements OnInit {
   resetUI(): void {
     this.osForm.reset();
     this.wizard.reset();
+  }
+
+  onAddPic(file: File) {
+    this.loader.next(true);
+    this._ath.uploadToS3(file[0]);
+    this._ath.uploadReady.subscribe(stat => {
+      if (stat) {
+        console.log('READY UPLOAD');
+        const x = this._ath.getObjUrl(file[0].name);
+        this._ath.letUrlOut.subscribe(url => {
+          console.log('URL READY => ', url);
+          this.url = url;
+          this.osForm.controls['profilePic'].setValue(url);
+          console.log(this.osForm.value);
+          this.loader.next(false);
+        })
+      }
+    })
   }
 
   createForm() {
@@ -154,7 +187,7 @@ export class HomeComponent implements OnInit {
       _id: '',
       __v: '',
       socials: [this.socials],
-      profilePic: '',
+      profilePic: [this.url],
       about: ''
     });
   }
