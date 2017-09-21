@@ -28,8 +28,8 @@ export class AthleteService {
   letUrlOut = new BehaviorSubject('');
   editUser = {};
   athleteDb: Athlete[] = [];
-  allApi = 'https://localhost:3000/api/athletes';
-  oneApi = 'https://localhost:3000/api/athlete/';
+  allApi = 'http://localhost:3000/api/athletes';
+  oneApi = 'http://localhost:3000/api/athlete/';
 
   constructor(private _http: HttpClient) {}
 
