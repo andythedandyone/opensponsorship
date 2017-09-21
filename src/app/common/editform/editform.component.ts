@@ -31,7 +31,7 @@ export class EditformComponent implements OnInit {
         console.log(' user ', this.user);
         console.log(' form ', this.osEditForm);
       }
-    })
+    });
   }
 
   onRegistar() {
@@ -48,7 +48,6 @@ export class EditformComponent implements OnInit {
   }
 
   onAddCharity(data: any) {
-    console.log(data.value);
     if (data.value.length > 0) {
       this.user['interest'].charities.push(data.value);
       console.log(this.user['interest'].charities);
@@ -56,9 +55,8 @@ export class EditformComponent implements OnInit {
     this.charityInput.nativeElement.value = '';
     this.charityInput.nativeElement.focus();
   }
-  //
+
   onAddSport(data: any) {
-    console.log(data.value);
     if (data.value.length > 0) {
       this.user['sports'].sports.push(data.value);
       console.log(this.user['sports'].sports);
@@ -66,7 +64,6 @@ export class EditformComponent implements OnInit {
   }
 
   onAddSocial(social: any, handler: any) {
-    console.log(social.value, handler.value);
     if (handler.value.length > 0) {
       this.user['socials'].push({'Social': social.value, 'handler': handler.value});
     }
@@ -89,21 +86,15 @@ export class EditformComponent implements OnInit {
     this._auth.uploadToS3(file[0]);
     this._auth.uploadReady.subscribe(stat => {
       if (stat) {
-        console.log('READY UPLOAD');
         const x = this._auth.getObjUrl(file[0].name);
         this._auth.letUrlOut.subscribe(url => {
-          console.log('URL READY => ', url);
           this.url = url;
           this.osEditForm.controls['profilePic'].setValue(url);
-          console.log(this.osEditForm.value);
           this.loader.next(false);
-        })
+        });
       }
-    })
+    });
   }
-
-
-
 
   createForm() {
     this.osEditForm = this.fb.group({
@@ -133,9 +124,4 @@ export class EditformComponent implements OnInit {
       about: ''
     });
   }
-
-
-
-
-
 }

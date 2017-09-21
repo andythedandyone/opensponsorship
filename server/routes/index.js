@@ -2,9 +2,7 @@ const Sportsman = require('../models/sportsman');
 const express = require('express');
 const router = express.Router();
 
-
 router.get('/athletes', function (req, res, next) {
-
   Sportsman.find({}, function(err, data) {
     if (err) {
       console.log(err);
@@ -15,7 +13,6 @@ router.get('/athletes', function (req, res, next) {
 });
 
 router.post('/athletes', function(req, res, next) {
-
   var data = req.body;
   var newRegistration = new Sportsman({
     personal: {
@@ -53,9 +50,7 @@ router.post('/athletes', function(req, res, next) {
   })
 });
 
-
 router.get('/athlete/:name', function(req, res, next) {
-
   var name = req.params.name;
 
   Sportsman.findOne({'name': new RegExp(name, 'i')}, function(err, player) {
@@ -70,7 +65,6 @@ router.get('/athlete/:name', function(req, res, next) {
 
 
 router.put('/athlete/:id', function(req, res, next) {
-
   var userId = req.params.id;
   var data = req.body;
 
@@ -80,7 +74,6 @@ router.put('/athlete/:id', function(req, res, next) {
         console.log(err);
         next(err);
       } else {
-
         user.personal.name = data.personal.name;
         user.personal.dob = data.personal.dob;
         user.personal.nationality = data.personal.nationality;

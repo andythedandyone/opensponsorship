@@ -62,8 +62,6 @@ export class AthleteService {
   }
 
   uploadToS3(file: File) {
-
-    console.log('original file --> ', file);
     if (file) {
       const params = {
         Body: file,
@@ -78,22 +76,14 @@ export class AthleteService {
           console.log('error ----> ', err);
           return;
         }
-        console.log('it has been saved ----> ', data);
-        console.log('-------------------------------------------');
-
         if (data) {
-          console.log('YES FILE UPLOADED');
           this.uploadReady.next(true);
         }
       });
     }
-
-    console.log('last line of send to s3');
   }
 
   getObjUrl(file: string = '') {
-    console.log('Reading Files');
-
     const params = {
       Bucket: bucket,
       Key: file,
@@ -105,7 +95,6 @@ export class AthleteService {
         console.log('error ----> ', err);
         return;
       }
-      console.log('success -----> ', data);
       this.letUrlOut.next(data);
       return data;
     });

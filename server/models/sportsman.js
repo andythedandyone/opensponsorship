@@ -1,5 +1,4 @@
 const mongose = require('mongoose');
-
 const Schema = mongose.Schema;
 
 const SportsMan = new Schema({
@@ -32,6 +31,5 @@ const SportsMan = new Schema({
   socials: [], // Media Handles (Facebook, Twitter, Instagram, Youtube, Twitch, Snapchat);
   profilePic: String // (If you have time - S3 storage)
 });
-
 
 module.exports = mongose.model('Sportsman', SportsMan);
