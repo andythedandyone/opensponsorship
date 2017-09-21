@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 // const dbUrl = process.env.MONGODB_URI;
-const dbUrl = ('mongodb://osp:open123456@ds135444.mlab.com:35444/opensponsorship');
+const dbUrl = 'mongodb://osp:open123456@ds135444.mlab.com:35444/opensponsorship';
 // mongodb://<dbuser>:<dbpassword>@ds141464.mlab.com:41464/heroku_5zz0n5bc
+mongoose.Promise = global.Promise;
 
 mongoose.connect(dbUrl, {useMongoClient: true});
 
