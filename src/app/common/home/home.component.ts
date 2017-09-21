@@ -58,12 +58,12 @@ export class HomeComponent implements OnInit {
   }
 
   register() {
-    this.resetUI();
+    // this.resetUI();
     this.open = true;
   }
 
   onAddCharity(data: any) {
-    console.log(data.value);
+    console.log('THIS IS CHARITY VAL #', data.value);
     if (data.value.length > 0) {
       this.charys.push(data.value);
       console.log(this.charys);
@@ -104,27 +104,29 @@ export class HomeComponent implements OnInit {
   onSubmit(file: any = '') {
     // console.log('file root ', file);
     if (this.osForm.status === 'VALID') {
-      // if(file) {
-      //   this._ath.uploadToS3(file[0]);
+      if (file !== '') {
+        this._ath.uploadToS3(file[0]);
         this._ath.uploadReady.subscribe(upload => {
           console.log('result from obser to s3 ', upload);
-          if (upload) {
+          if (upload === true) {
             this._ath.saveData(this.osForm.value).subscribe((data) => {
               this.users.push(data);
-              console.log('result of form ---> ', this.osForm.value);
+              console.log('result of form and REseting UI ---> ', this.osForm.value);
               this.resetUI();
             });
           }
         });
       } else {
         this._ath.saveData(this.osForm.value).subscribe((data) => {
+          console.log('Returning POST and pushing to users array and reseting UI' , data);
           this.users.push(data);
+          // console.log(users);
           this.resetUI();
         });
       }
-    // } else {
-    //   console.log('FORM IS EMPTY');
-    // }
+    } else {
+      console.log('FORM IS EMPTY/INVALID');
+    }
     this._ath.uploadReady.next(false);
   }
 
@@ -133,7 +135,7 @@ export class HomeComponent implements OnInit {
     const x = this.users.find( id => {
       return id === event;
     });
-    this.osForm.setValue(x);
+    // this.osForm.setValue(x);
     this.edit = x;
     this._ath.editUser = x;
     this._ath.letThemKnow.next(false);
@@ -141,6 +143,7 @@ export class HomeComponent implements OnInit {
   }
 
   resetUI(): void {
+    console.log('calling reset UI');
     this.osForm.reset();
     this.wizard.reset();
   }
@@ -149,7 +152,7 @@ export class HomeComponent implements OnInit {
     this.loader.next(true);
     this._ath.uploadToS3(file[0]);
     this._ath.uploadReady.subscribe(stat => {
-      if (stat) {
+      if (stat === true) {
         console.log('READY UPLOAD');
         const x = this._ath.getObjUrl(file[0].name);
         this._ath.letUrlOut.subscribe(url => {
@@ -158,9 +161,9 @@ export class HomeComponent implements OnInit {
           this.osForm.controls['profilePic'].setValue(url);
           console.log(this.osForm.value);
           this.loader.next(false);
-        })
+        });
       }
-    })
+    });
   }
 
   createForm() {

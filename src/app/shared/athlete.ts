@@ -1,7 +1,7 @@
 export interface Athlete {
   personal: {
     name: string;
-    dob?: Date;
+    dob?: string;
     nationality?: string;
     gender?: string;
     marital?: boolean;

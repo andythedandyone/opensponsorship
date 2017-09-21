@@ -9,7 +9,7 @@ const SportsMan = new Schema({
       require: true
     },
     dob: {
-      type: Date,
+      type: String,
       require: true
     },
     nationality: String,

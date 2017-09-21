@@ -28,9 +28,10 @@ export class AthleteService {
   letUrlOut = new BehaviorSubject('');
   editUser = {};
   athleteDb: Athlete[] = [];
-  allApi = 'http://localhost:3000/api/athletes';
-  oneApi = 'http://localhost:3000/api/athlete/';
-
+  // allApi = 'http://localhost:3000/api/athletes';
+  // oneApi = 'http://localhost:3000/api/athlete/';
+  allApi = 'http://ec2-34-204-48-226.compute-1.amazonaws.com:3000/api/athletes';
+  oneApi = 'http://ec2-34-204-48-226.compute-1.amazonaws.com:3000/api/athlete/';
   constructor(private _http: HttpClient) {}
 
   getAll() {

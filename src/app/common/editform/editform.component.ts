@@ -25,14 +25,11 @@ export class EditformComponent implements OnInit {
   }
   ngOnInit() {
     this._auth.editReady.subscribe(state => {
-      // console.log(this._auth.editUser);
-      if (state) {
+      if (state === true) {
         this.user = this._auth.editUser;
         this.osEditForm.setValue(this.user);
         console.log(' user ', this.user);
         console.log(' form ', this.osEditForm);
-        // this.drinks = this.user['interest'].drinks;
-        // console.log('DRINKS ---> ', this.drinks);
       }
     })
   }
